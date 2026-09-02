@@ -1,6 +1,6 @@
 # Nand-to-Tetris_YuktiYadav
 HDL codes of lab 1
-For And Gate:
+##For And Gate:
 
 CHIP And {
     IN a, b;
@@ -12,7 +12,7 @@ CHIP And {
     Nand(a=c ,b=c, out=out);
 }
 
-For Or Gate:
+##For Or Gate:
 
 CHIP Or {
     IN a, b;
@@ -25,7 +25,7 @@ CHIP Or {
 }
 
 
-For Not Gate:
+##For Not Gate:
 
 CHIP Not {
     IN in;
@@ -36,7 +36,7 @@ CHIP Not {
     
 }
 
-For Xor:
+##For Xor:
 
 CHIP Xor {
     IN a, b;
@@ -50,7 +50,7 @@ CHIP Xor {
     
 }
 
-For MUX:
+##For MUX:
 
 CHIP Mux {
     IN a, b, sel;
@@ -63,7 +63,7 @@ CHIP Mux {
     Or(a=x, b=y, out=out);
 }
 
-for DMUX:
+##for DMUX:
 
 CHIP DMux {
     IN in, sel;
@@ -75,7 +75,7 @@ CHIP DMux {
     And(a=in, b=sel, out=b);
 }
 
-for Not 16:
+##for Not 16:
 
 CHIP Not16 {
     IN in[16];
@@ -100,7 +100,7 @@ CHIP Not16 {
     Not(in=in[15], out=out[15]);
 }
 
-For And16:
+##For And16:
 
 CHIP And16 {
     IN a[16], b[16];
@@ -125,7 +125,7 @@ CHIP And16 {
     And(a=a[15], b=b[15], out=out[15]);
 }
 
-For Or16:
+##For Or16:
 
 CHIP Or16 {
     IN a[16], b[16];
@@ -150,5 +150,95 @@ CHIP Or16 {
     Or(a=a[15], b=b[15], out=out[15]);
 }
 
+##For Mux16:
+
+CHIP Mux16 {
+    IN a[16], b[16], sel;
+    OUT out[16];
+
+    PARTS:
+    Mux(a=a[0], b=b[0], sel=sel, out=out[0]);
+    Mux(a=a[1], b=b[1], sel=sel, out=out[1]);
+    Mux(a=a[2], b=b[2], sel=sel, out=out[2]);
+    Mux(a=a[3], b=b[3], sel=sel, out=out[3]);
+    Mux(a=a[4], b=b[4], sel=sel, out=out[4]);
+    Mux(a=a[5], b=b[5], sel=sel, out=out[5]);
+    Mux(a=a[6], b=b[6], sel=sel, out=out[6]);
+    Mux(a=a[7], b=b[7], sel=sel, out=out[7]);
+    Mux(a=a[8], b=b[8], sel=sel, out=out[8]);
+    Mux(a=a[9], b=b[9], sel=sel, out=out[9]);
+    Mux(a=a[10], b=b[10], sel=sel, out=out[10]);
+    Mux(a=a[11], b=b[11], sel=sel, out=out[11]);
+    Mux(a=a[12], b=b[12], sel=sel, out=out[12]);
+    Mux(a=a[13], b=b[13], sel=sel, out=out[13]);
+    Mux(a=a[14], b=b[14], sel=sel, out=out[14]);
+    Mux(a=a[15], b=b[15], sel=sel, out=out[15]);
+}
 
 
+##For Or8Way:
+
+CHIP Or8Way {
+    IN in[8];
+    OUT out;
+
+    PARTS:
+    Or(a=in[0], b=in[1], out=or1);
+    Or(a=in[2], b=in[3], out=or2);
+    Or(a=in[4], b=in[5], out=or3);
+    Or(a=in[6], b=in[7], out=or4);
+    Or(a=or1, b=or2, out=or5);
+    Or(a=or3, b=or4, out=or6);
+    Or(a=or5, b=or6, out=out);
+}
+
+##For Mux4Way16:
+
+CHIP Mux4Way16 {
+    IN a[16], b[16], c[16], d[16], sel[2];
+    OUT out[16];
+    
+    
+    PARTS:
+    Mux16(a=a, b=b, sel=sel[0], out=ab);
+    Mux16(a=c, b=d, sel=sel[0], out=cd);
+    Mux16(a=ab, b=cd, sel=sel[1], out=out);
+}
+
+##For Mux8Way16:
+
+CHIP Mux8Way16 {
+    IN a[16], b[16], c[16], d[16],
+       e[16], f[16], g[16], h[16],
+       sel[3];
+    OUT out[16];
+
+    PARTS:
+    Mux4Way16(a=a, b=b, c=c, d=d, sel=sel[0..1], out=abcd);
+    Mux4Way16(a=e, b=f, c=g, d=h, sel=sel[0..1], out=efgh);
+    Mux16(a=abcd, b=efgh, sel=sel[2], out=out);
+}
+
+##For DMux4Way:
+
+CHIP DMux4Way {
+    IN in, sel[2];
+    OUT a, b, c, d;
+
+    PARTS:
+    DMux(in=in, sel=sel[1], a=ab, b=cd);
+    DMux(in=ab, sel=sel[0], a=a, b=b);
+    DMux(in=cd, sel=sel[0], a=c, b=d);
+}
+
+##For DMux8Way:
+
+CHIP DMux8Way {
+    IN in, sel[3];
+    OUT a, b, c, d, e, f, g, h;
+
+    PARTS:
+    DMux(in=in, sel=sel[2], a=abcd, b=efgh);
+    DMux4Way(in=abcd, sel=sel[0..1], a=a, b=b, c=c, d=d);
+    DMux4Way(in=efgh, sel=sel[0..1], a=e, b=f, c=g, d=h);
+}
