@@ -1,4 +1,4 @@
-# Nand-to-Tetris_YuktiYadav PROJECT1/2
+# Nand-to-Tetris_YuktiYadav PROJECT1/2/3
 HDL codes of lab 1
 ##For And Gate:
 
@@ -334,6 +334,87 @@ CHIP ALU {
     Or(a=orLow, b=orHigh, out=notZero);
     Not(in=notZero, out=zr);
 }
+
+
+##PROJECT3
+
+##BIT
+
+CHIP Bit {
+    IN in, load;
+    OUT out;
+
+    PARTS:
+    Mux(a=outLoop,b=in,sel=load,out=muxOut);
+    DFF(in=muxOut,out=outLoop,out=out);
+}
+
+
+##REGISTER
+CHIP Register {
+    IN in[16], load;
+    OUT out[16];
+
+    PARTS:
+    //// Replace this comment with your code.
+    Bit(in=in[0], load=load,out=out[0]);
+    Bit(in=in[1], load=load,out=out[1]);
+    Bit(in=in[2], load=load,out=out[2]);
+    Bit(in=in[3], load=load,out=out[3]);
+    Bit(in=in[4], load=load,out=out[4]);
+    Bit(in=in[5], load=load,out=out[5]);
+    Bit(in=in[6], load=load,out=out[6]);
+    Bit(in=in[7], load=load,out=out[7]);
+    Bit(in=in[8], load=load,out=out[8]);
+    Bit(in=in[9], load=load,out=out[9]);
+    Bit(in=in[10], load=load,out=out[10]);
+    Bit(in=in[11], load=load,out=out[11]);
+    Bit(in=in[12], load=load,out=out[12]);
+    Bit(in=in[13], load=load,out=out[13]);
+    Bit(in=in[14], load=load,out=out[14]);
+    Bit(in=in[15], load=load,out=out[15]);
+}
+
+
+##RAM8
+CHIP RAM8 {
+    IN in[16], load, address[3];
+    OUT out[16];
+
+    PARTS:
+    //// Replace this comment with your code.
+     DMux8Way(in=load,sel=address,a=l0,b=l1,c=l2,d=l3,e=l4,f=l5,g=l6,h=l7);
+     Register(in=in,load=l0,out=r0);
+     Register(in=in,load=l1,out=r1);
+     Register(in=in,load=l2,out=r2);
+     Register(in=in,load=l3,out=r3);
+     Register(in=in,load=l4,out=r4);
+     Register(in=in,load=l5,out=r5);
+     Register(in=in,load=l6,out=r6);
+     Register(in=in,load=l7,out=r7);
+     Mux8Way16(a=r0,b=r1,c=r2,d=r3,e=r4,f=r5,g=r6,h=r7,sel=address,out=out);
+}
+
+##RAM64
+CHIP RAM64 {
+    IN in[16], load, address[6];
+    OUT out[16];
+
+    PARTS:
+    //// Replace this comment with your code.
+    DMux8Way(in=load,sel=address[3..5],a=l0,b=l1,c=l2,d=l3,e=l4,f=l5,g=l6,h=l7);
+    RAM8(in=in,load=l0,address=address[0..2],out=r0);
+    RAM8(in=in,load=l1,address=address[0..2],out=r1);
+    RAM8(in=in,load=l2,address=address[0..2],out=r2);
+    RAM8(in=in,load=l3,address=address[0..2],out=r3);
+    RAM8(in=in,load=l4,address=address[0..2],out=r4);
+    RAM8(in=in,load=l5,address=address[0..2],out=r5);
+    RAM8(in=in,load=l6,address=address[0..2],out=r6);
+    RAM8(in=in,load=l7,address=address[0..2],out=r7);
+    Mux8Way16(a=r0,b=r1,c=r2,d=r3,e=r4,f=r5,g=r6,h=r7,sel=address[3..5],out=out);
+    }
+
+
 
 
 
